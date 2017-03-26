@@ -1,0 +1,30 @@
+{
+    "name": "swatkins/laravel-approval-system",
+    "description": "Provides an approval workflow for any Eloquent model.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Scott Watkins",
+            "email": "scott@swatkins.me"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Swatkins\\Approvals\\": "./src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\": "../../../app/",
+            "Tests\\": "tests/",
+            "Swatkins\\Approvals\\": "./src"
+        }
+    },
+    "require-dev": {
+        "orchestra/testbench": "~3.4",
+        "phpunit/phpunit": "^6.0",
+        "orchestra/database": "@dev"
+    }
+}
