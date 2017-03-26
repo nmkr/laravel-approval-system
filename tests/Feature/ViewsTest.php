@@ -10,9 +10,9 @@ class ViewsTest extends BaseTestCase
     /**
      * @test
      */
-//    public function user_is_able_to_view_releases()
-//    {
-//        $this->assertTrue(true);
-//    }
+    public function user_is_able_to_view_releases()
+    {
+        $this->assertTrue(true);
+    }
 
 }
