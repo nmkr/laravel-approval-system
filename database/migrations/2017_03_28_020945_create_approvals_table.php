@@ -15,8 +15,11 @@ class CreateApprovalsTable extends Migration
     {
         Schema::create('approvals', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('requester_id');
             $table->unsignedInteger('approver_id');
             $table->morphs('approvable');
+            $table->boolean('approved')->default(false);
+            $table->dateTime('last_activity')->nullable();
             $table->timestamps();
         });
     }

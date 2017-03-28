@@ -2,6 +2,8 @@
 
 return [
 
-    'approver_model' => '\App\User'
+    'approver_model' => '\App\User',
+
+    'requester_model' => '\App\User',
 
 ];

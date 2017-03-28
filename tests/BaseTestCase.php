@@ -2,15 +2,37 @@
 
 namespace Tests;
 
+use Illuminate\Support\Facades\DB;
 use Orchestra\Testbench\Http\Kernel;
 use Orchestra\Database\ConsoleServiceProvider;
-use \Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Swatkins\Approvals\ApprovalsServiceProvider;
-use Swatkins\LaravelGithubReleases\GithubReleasesServiceProvider;
-use Swatkins\LaravelGithubReleases\ReleaseManager;
+use \Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 abstract class BaseTestCase extends OrchestraTestCase
 {
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->loadLaravelMigrations(['--database' => 'testbench']);
+
+        $this->artisan('migrate', ['--database' => 'testbench', '--step' => '']);
+
+        $this->withFactories(__DIR__ . '/../database/factories');
+
+    }
+
+    public function tearDown()
+    {
+        $tables = DB::select('select * from sqlite_master where type="table"');
+
+        foreach($tables as $table) {
+            if ( ! str_contains($table->name, 'sqlite_') ) {
+                DB::statement("DROP TABLE $table->name");
+            }
+        }
+    }
 
     protected function getPackageProviders($app)
     {
@@ -43,7 +65,7 @@ abstract class BaseTestCase extends OrchestraTestCase
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
             'driver'   => 'sqlite',
-            'database' => ':memory:',
+            'database' => ':memory:', //__DIR__ . '/database.sqlite',
             'prefix'   => '',
         ]);
     }
