@@ -68,6 +68,8 @@ abstract class BaseTestCase extends OrchestraTestCase
             'database' => ':memory:', //__DIR__ . '/database.sqlite',
             'prefix'   => '',
         ]);
+        $app['config']->set('approvals.requester_model', \Tests\Stubs\User::class);
+        $app['config']->set('approvals.approver_model', \Tests\Stubs\User::class);
     }
 
 }
