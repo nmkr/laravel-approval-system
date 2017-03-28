@@ -20,7 +20,6 @@ class ApprovalsWorkflowTest extends BaseTestCase
 
         $approval = $widget->requestApprovalFrom($approver);
         $this->assertInstanceOf(Approval::class, $approval); // sanity check that we actually receive an Approval instance
-        $approval->load(['requester', 'approver', 'approvable']);
 
         $this->assertEquals('requester@example.com', $approval->requester->email);
         $this->assertEquals('approver@example.com', $approval->approver->email);

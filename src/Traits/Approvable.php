@@ -26,7 +26,7 @@ trait Approvable
 
     private function createNewApproval($approver)
     {
-        return Approval::create([
+        $approval = Approval::create([
             'requester_id'    => $this->getModelOwner()->id,
             'approver_id'     => $approver->id,
             'approvable_type' => static::class,
@@ -34,6 +34,8 @@ trait Approvable
             'approved'        => false,
             'last_activity'   => null
         ]);
+        $approval->load(['requester', 'approver', 'approvable']);
+        return $approval;
     }
 
     public function approval()
