@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Unit;
+namespace Swatkins\Approvals\Tests\Unit;
 
 use Swatkins\Approvals\Models\Approval;
 use Swatkins\Approvals\Models\Widget;
-use Tests\BaseTestCase;
+use Swatkins\Approvals\Tests\BaseTestCase;
 
 class ApprovalsWorkflowTest extends BaseTestCase
 {

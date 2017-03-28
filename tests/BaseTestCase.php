@@ -1,12 +1,13 @@
 <?php
 
-namespace Tests;
+namespace Swatkins\Approvals\Tests;
 
 use Illuminate\Support\Facades\DB;
 use Orchestra\Testbench\Http\Kernel;
+use Swatkins\Approvals\Tests\Stubs\User;
 use Orchestra\Database\ConsoleServiceProvider;
 use Swatkins\Approvals\ApprovalsServiceProvider;
-use \Orchestra\Testbench\TestCase as OrchestraTestCase;
+use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 abstract class BaseTestCase extends OrchestraTestCase
 {
@@ -68,8 +69,8 @@ abstract class BaseTestCase extends OrchestraTestCase
             'database' => ':memory:', //__DIR__ . '/database.sqlite',
             'prefix'   => '',
         ]);
-        $app['config']->set('approvals.requester_model', \Tests\Stubs\User::class);
-        $app['config']->set('approvals.approver_model', \Tests\Stubs\User::class);
+        $app['config']->set('approvals.requester_model', User::class);
+        $app['config']->set('approvals.approver_model', User::class);
     }
 
 }

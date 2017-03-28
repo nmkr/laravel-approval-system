@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Stubs;
+namespace Swatkins\Approvals\Tests\Stubs;
 
 use Illuminate\Foundation\Auth\User as Eloquent;
 
