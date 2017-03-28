@@ -18,7 +18,17 @@ class ApprovalsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations/');
+
+        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+
+        $this->publishes([ __DIR__ . '/Config/approvals.php' => config_path('approvals.php') ]);
+
+        $this->loadViewsFrom(__DIR__.'/Views', 'approvals');
+
+        $this->publishes([ __DIR__ . '/Views' => resource_path('views/vendor/approvals') ]);
+
     }
 
     /**
@@ -29,6 +39,7 @@ class ApprovalsServiceProvider extends ServiceProvider
     public function register()
     {
 
+        $this->mergeConfigFrom(__DIR__ . '/Config/approvals.php', 'approvals');
 
     }
 
