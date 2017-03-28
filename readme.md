@@ -5,6 +5,6 @@
 
 # Laravel Approval System
 
-NOTE: Docs coming soon!
+Not yet ready for PrimeTime!
 
 

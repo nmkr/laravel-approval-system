@@ -14,6 +14,7 @@ class ApprovalsWorkflowTest extends BaseTestCase
      */
     public function user_is_able_to_submit_a_model_for_approval()
     {
+
         $requester = factory(config('approvals.requester_model'))->create([ 'email' => 'requester@example.com' ]);
         $approver = factory(config('approvals.approver_model'))->create([ 'email' => 'approver@example.com' ]);
         $widget = factory(Widget::class)->create([ 'name' => 'Test Widget', 'owner_id' => $requester->id ]);
