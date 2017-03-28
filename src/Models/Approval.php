@@ -38,4 +38,27 @@ class Approval extends Model
     {
         return $this->hasMany(Review::class);
     }
+
+    public function review($approved = false, $message = "", $approver = null)
+    {
+        $approver = $approver ?: auth()->user();
+        $review = Review::create([
+            'author_id'   => (integer) $approver->id,
+            'approval_id' => (integer) $this->id,
+            'body'        => $message,
+            'approved'    => (boolean) $approved,
+        ]);
+        $review->load(['author', 'approval']);
+        return $review;
+    }
+
+    public function setApprovedAttribute($value)
+    {
+        $this->attributes['approved'] = (boolean) $value;
+    }
+
+    public function getApprovedAttribute()
+    {
+        return (boolean) $this->attributes['approved'];
+    }
 }

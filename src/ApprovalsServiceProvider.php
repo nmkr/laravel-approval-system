@@ -2,7 +2,11 @@
 
 namespace Swatkins\Approvals;
 
+use Swatkins\Approvals\Models\Review;
+use Swatkins\Approvals\Models\Approval;
 use Illuminate\Support\ServiceProvider;
+use Swatkins\Approvals\Observers\ReviewObserver;
+use Swatkins\Approvals\Observers\ApprovalObserver;
 
 /**
  * Class ApprovalsServiceProvider
@@ -28,6 +32,9 @@ class ApprovalsServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/Views', 'approvals');
 
         $this->publishes([ __DIR__ . '/Views' => resource_path('views/vendor/approvals') ]);
+
+        Review::observe(ReviewObserver::class);
+        Approval::observe(ApprovalObserver::class);
 
     }
 
