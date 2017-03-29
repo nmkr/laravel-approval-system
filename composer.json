@@ -23,7 +23,7 @@
         }
     },
     "require-dev": {
-        "orchestra/testbench": "~3.4",
+        "orchestra/testbench-browser-kit": "~3.4@dev",
         "phpunit/phpunit": "^6.0",
         "orchestra/database": "@dev"
     }
