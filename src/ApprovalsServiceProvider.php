@@ -24,7 +24,7 @@ class ApprovalsServiceProvider extends ServiceProvider
     {
 
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations/');
-        
+
         $this->publishes([ __DIR__ . '/Config/approvals.php' => config_path('approvals.php') ]);
 
         Review::observe(ReviewObserver::class);

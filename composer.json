@@ -25,6 +25,7 @@
     "require-dev": {
         "orchestra/testbench-browser-kit": "~3.4@dev",
         "phpunit/phpunit": "^6.0",
-        "orchestra/database": "@dev"
+        "orchestra/database": "@dev",
+        "mockery/mockery": "dev-master@dev"
     }
 }
