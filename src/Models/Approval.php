@@ -3,6 +3,8 @@
 namespace Swatkins\Approvals\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Swatkins\Approvals\Exceptions\ModelNotInstanceOfApproverModelException;
+use Swatkins\Approvals\Exceptions\UserDoesNotHaveApprovalAuthorityException;
 
 class Approval extends Model
 {
@@ -13,7 +15,7 @@ class Approval extends Model
         'approvable_type',
         'approvable_id',
         'approved',
-        'last_activity'
+        'last_activity',
     ];
 
     public function requester()
@@ -42,23 +44,31 @@ class Approval extends Model
     public function review($approved = false, $message = "", $approver = null)
     {
         $approver = $approver ?: auth()->user();
+        $approverModel = config('approvals.approver_model');
+        if (!$approver instanceof $approverModel) {
+            throw new ModelNotInstanceOfApproverModelException;
+        }
+        if (!$approver->canApprove($this)) {
+            throw new UserDoesNotHaveApprovalAuthorityException;
+        }
         $review = Review::create([
-            'author_id'   => (integer) $approver->id,
-            'approval_id' => (integer) $this->id,
+            'author_id'   => (integer)$approver->id,
+            'approval_id' => (integer)$this->id,
             'body'        => $message,
-            'approved'    => (boolean) $approved,
+            'approved'    => (boolean)$approved,
         ]);
         $review->load(['author', 'approval']);
+
         return $review;
     }
 
     public function setApprovedAttribute($value)
     {
-        $this->attributes['approved'] = (boolean) $value;
+        $this->attributes['approved'] = (boolean)$value;
     }
 
     public function getApprovedAttribute()
     {
-        return (boolean) $this->attributes['approved'];
+        return (boolean)$this->attributes['approved'];
     }
 }

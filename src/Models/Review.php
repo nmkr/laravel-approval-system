@@ -14,6 +14,10 @@ class Review extends Model
         'approved',
     ];
 
+    protected $appends = [
+        'is_declined'
+    ];
+
     public function author()
     {
         return $this->belongsTo(config('approvals.requester_model'));
@@ -32,5 +36,10 @@ class Review extends Model
     public function getApprovedAttribute()
     {
         return (boolean) $this->attributes['approved'];
+    }
+
+    public function getIsDeclinedAttribute()
+    {
+        return ($this->approved === false);
     }
 }

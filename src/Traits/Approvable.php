@@ -2,14 +2,16 @@
 
 namespace Swatkins\Approvals\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
+use Swatkins\Approvals\Models\Approval;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Swatkins\Approvals\Exceptions\ApprovalHasAlreadyBeenRequestedException;
 use Swatkins\Approvals\Exceptions\ModelNotInstanceOfApproverModelException;
-use Swatkins\Approvals\Models\Approval;
 
 trait Approvable
 {
 
-    public function requestApprovalFrom($approver)
+    public function requestApprovalFrom($approver) : Approval
     {
         $approverModel = config('approvals.approver_model');
         if (!$approver instanceof $approverModel) {
@@ -24,7 +26,7 @@ trait Approvable
 
     }
 
-    private function createNewApproval($approver)
+    private function createNewApproval($approver) : Approval
     {
         $approval = Approval::create([
             'requester_id'    => (int) $this->getModelOwner()->id,
@@ -38,7 +40,7 @@ trait Approvable
         return $approval;
     }
 
-    public function approval()
+    public function approval() : MorphOne
     {
         return $this->morphOne(Approval::class, 'approvable');
     }
