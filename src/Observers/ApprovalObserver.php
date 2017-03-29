@@ -7,4 +7,5 @@ use Swatkins\Approvals\Models\Approval;
 class ApprovalObserver
 {
 
+
 }

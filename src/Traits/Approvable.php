@@ -3,6 +3,7 @@
 namespace Swatkins\Approvals\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
+use Swatkins\Approvals\Exceptions\UserCannotApproveTheirOwnApprovalRequestExecption;
 use Swatkins\Approvals\Models\Approval;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Swatkins\Approvals\Exceptions\ApprovalHasAlreadyBeenRequestedException;
@@ -17,9 +18,13 @@ trait Approvable
         if (!$approver instanceof $approverModel) {
             throw new ModelNotInstanceOfApproverModelException;
         }
-
-        if (static::has('approval')->get()->count()) {
+        $this->load('approval');
+        if ($this->approval) {
             throw new ApprovalHasAlreadyBeenRequestedException;
+        }
+
+        if ($approver->id === $this->owner->id) {
+            throw new UserCannotApproveTheirOwnApprovalRequestExecption;
         }
 
         return $this->createNewApproval($approver);
@@ -43,6 +48,25 @@ trait Approvable
     public function approval() : MorphOne
     {
         return $this->morphOne(Approval::class, 'approvable');
+    }
+
+    public function scopeApproved($query)
+    {
+        return $query->whereHas('approval.reviews', function ($subQuery) {
+            $subQuery->where('approved', 1);
+        });
+    }
+
+    public function scopeDeclined($query)
+    {
+        return $query->whereHas('approval.reviews', function ($subQuery) {
+            $subQuery->where('approved', 0);
+        });
+    }
+
+    public function scopeNotreviewed($query)
+    {
+        return $query->has('approval')->doesntHave('approval.reviews');
     }
 
     abstract public function morphOne($related, $name, $type = null, $id = null, $localKey = null);

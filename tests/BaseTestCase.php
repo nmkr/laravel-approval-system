@@ -4,6 +4,7 @@ namespace Swatkins\Approvals\Tests;
 
 use Illuminate\Support\Facades\DB;
 use Orchestra\Testbench\Http\Kernel;
+use Swatkins\Approvals\Models\Widget;
 use Swatkins\Approvals\Tests\Stubs\User;
 use Orchestra\Database\ConsoleServiceProvider;
 use Swatkins\Approvals\ApprovalsServiceProvider;
@@ -71,6 +72,19 @@ abstract class BaseTestCase extends OrchestraTestCase
         ]);
         $app['config']->set('approvals.requester_model', User::class);
         $app['config']->set('approvals.approver_model', User::class);
+    }
+
+    /**
+     * @return array
+     */
+    protected function setupAndCreateApproval($requesterEmail = 'requester@example.com', $approverEmail = 'approver@example.com', $widgetName = 'Test Widget'): array
+    {
+        $requester = factory(config('approvals.requester_model'))->create(['email' => $requesterEmail]);
+        $approver = factory(config('approvals.approver_model'))->create(['email' => $approverEmail]);
+        $widget = factory(Widget::class)->create(['name' => $widgetName, 'owner_id' => $requester->id]);
+        $approval = $widget->requestApprovalFrom($approver);
+        $widget->load('approval');
+        return array($requester, $approver, $widget, $approval);
     }
 
 }
